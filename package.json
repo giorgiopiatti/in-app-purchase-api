@@ -1,0 +1,44 @@
+{
+    "name": "in-app-purchase-api",
+    "description": "In-App-Purchase validation and subscription management for iOS, Android",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": {
+        "name": "Giorgio Piatti",
+        "email": "giorgio-piatti@outlook.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/giorgiopiatti/in-app-purchase-api.git"
+    },
+    "#engine": "node >= 0.10.20",
+    "contributors": [],
+    "keywords": [
+        "Apple",
+        "iOS",
+        "Android",
+        "Purchase",
+        "Subscription",
+        "App",
+        "in-app-purchase",
+        "in-app-billing",
+        "Validation",
+        "IAP"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/giorgiopiatti/in-app-purchase-api/issues"
+    },
+    "homepage": "https://github.com/giorgiopiatti/in-app-purchase-api#readme",
+    "dependencies": {
+        "xmldom": "0.1.19",
+        "xml-crypto": "0.10.1",
+        "request": "2.83.0"
+    },
+    "devDependencies": {
+        "typescript": "^2.7.2"
+    },
+    "scripts": {
+        "build": "tsc"
+    }
+}
