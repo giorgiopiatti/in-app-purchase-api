@@ -31,9 +31,7 @@
     },
     "homepage": "https://github.com/giorgiopiatti/in-app-purchase-api#readme",
     "dependencies": {
-        "xmldom": "0.1.19",
-        "xml-crypto": "0.10.1",
-        "request": "2.83.0"
+        "web-request": "^1.0.7"
     },
     "devDependencies": {
         "typescript": "^2.7.2"
