@@ -1,11 +1,11 @@
-import * as WebRequest from 'web-request';
-import { RequestOptions } from 'web-request';
-
+import * as RequestPromise from 'request-promise-native';
+import * as Request from 'request';
 
 export declare interface IAPTokenMap {
     clientId: string,
     clientSecret: string,
     refreshToken: string,
+    redirect_uri: string,
     accessToken?: string,
     sandboxPkey: string,
     livePkey: string
@@ -15,7 +15,8 @@ export declare interface GoogleAPIAuthRequest {
     grant_type: string,
     client_id: string,
     client_secret: string,
-    refresh_token: string
+    refresh_token: string,
+    redirect_uri: string
 }
 
 export declare interface GoogleAPIAuthResponse {
@@ -145,36 +146,28 @@ export class AndroidIAP {
     public validateProduct(tokenMap: IAPTokenMap, receipt: GoogleNativeValuePurchase, isSandbox?: boolean): Promise<GoogleAPIProductPurchaseResponse> {
         return this.authGoogleAPI(tokenMap)
             .then((googleAuth) => {
-                let options: RequestOptions = {
-                    json: true,
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                let options: Request.CoreOptions = {
+                    json: true
                 };
                 let authToken = '?access_token=' + googleAuth.access_token;
                 let url = 'https://www.googleapis.com/androidpublisher/v2/applications/' + receipt.packageName + '/purchases/products/'
                     + receipt.productId + '/tokens/' + receipt.purchaseToken + authToken;
-                return WebRequest.json<GoogleAPIProductPurchaseResponse>(url, options);
+                return RequestPromise.get(url, options).then((res: GoogleAPIProductPurchaseResponse) => { return res });
             });
     }
 
     public validateSubscription(tokenMap: IAPTokenMap, receipt: GoogleNativeValuePurchase, isSandbox?: boolean): Promise<GoogleAPISubscriptionPurchaseResponse> {
         return this.authGoogleAPI(tokenMap)
             .then((googleAuth) => {
-                let options: RequestOptions = {
+                let options: Request.CoreOptions = {
                     json: true,
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
                 };
 
                 let authToken = '?access_token=' + googleAuth.access_token;
 
                 let url = 'https://www.googleapis.com/androidpublisher/v2/applications/' + receipt.packageName + '/purchases/subscriptions/'
                     + receipt.productId + '/tokens/' + receipt.purchaseToken + authToken;
-                return WebRequest.json<GoogleAPISubscriptionPurchaseResponse>(url, options);
+                return RequestPromise.get(url, options).then((res: GoogleAPISubscriptionPurchaseResponse) => { return res });
             });
     }
 
@@ -183,17 +176,15 @@ export class AndroidIAP {
             grant_type: 'refresh_token',
             client_id: tokenMap.clientId,
             client_secret: tokenMap.clientSecret,
-            refresh_token: tokenMap.refreshToken
+            refresh_token: tokenMap.refreshToken,
+            redirect_uri: tokenMap.redirect_uri
         }
-        let options: RequestOptions = {
+        let options: Request.CoreOptions = {
             json: true,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: body
         };
 
-        return WebRequest.json<GoogleAPIAuthResponse>('https://accounts.google.com/o/oauth2/token', options).then((res) => {
+        return RequestPromise.post('https://accounts.google.com/o/oauth2/token', options).then((res: GoogleAPIAuthResponse) => {
             console.log('Google auth done: ', JSON.stringify(res));
             return res;
         })

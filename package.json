@@ -31,7 +31,10 @@
     },
     "homepage": "https://github.com/giorgiopiatti/in-app-purchase-api#readme",
     "dependencies": {
-        "web-request": "^1.0.7"
+        "@types/request": "^2.47.0",
+        "@types/request-promise-native": "^1.0.14",
+        "request": "^2.83.0",
+        "request-promise-native": "^1.0.5"
     },
     "devDependencies": {
         "typescript": "^2.7.2"
