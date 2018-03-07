@@ -5,7 +5,6 @@ export declare interface IAPTokenMap {
     clientId: string,
     clientSecret: string,
     refreshToken: string,
-    redirect_uri: string,
     accessToken?: string,
     sandboxPkey: string,
     livePkey: string
@@ -15,8 +14,7 @@ export declare interface GoogleAPIAuthRequest {
     grant_type: string,
     client_id: string,
     client_secret: string,
-    refresh_token: string,
-    redirect_uri: string
+    refresh_token: string
 }
 
 export declare interface GoogleAPIAuthResponse {
@@ -27,19 +25,14 @@ export declare interface GoogleAPIAuthResponse {
 }
 
 /**
- * 
+ *
  * See table 7 of 'INAPP_PURCHASE_DATA'
  * @link https://developer.android.com/google/play/billing/billing_reference.html
  */
 export declare interface GoogleNativeValuePurchase {
-    autoRenewing: boolean,
-    packageName: string,
-    orderId: string,
-    productId: string,
-    purchaseTime: number,
-    purchaseState: number,
-    developerPayload?: string,
-    purchaseToken: string
+    packageName: string;
+    productId: string;
+    purchaseToken: string;
 }
 
 /** 
@@ -176,8 +169,7 @@ export class AndroidIAP {
             grant_type: 'refresh_token',
             client_id: tokenMap.clientId,
             client_secret: tokenMap.clientSecret,
-            refresh_token: tokenMap.refreshToken,
-            redirect_uri: tokenMap.redirect_uri
+            refresh_token: tokenMap.refreshToken
         }
         let options: Request.CoreOptions = {
             form: form,
