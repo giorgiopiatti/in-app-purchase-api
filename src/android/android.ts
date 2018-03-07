@@ -160,7 +160,7 @@ export class AndroidIAP {
         return this.authGoogleAPI(tokenMap)
             .then((googleAuth) => {
                 let options: Request.CoreOptions = {
-                    json: true,
+                    json: true
                 };
 
                 let authToken = '?access_token=' + googleAuth.access_token;
@@ -172,7 +172,7 @@ export class AndroidIAP {
     }
 
     private authGoogleAPI(tokenMap: IAPTokenMap): Promise<GoogleAPIAuthResponse> {
-        let body: GoogleAPIAuthRequest = {
+        let form: GoogleAPIAuthRequest = {
             grant_type: 'refresh_token',
             client_id: tokenMap.clientId,
             client_secret: tokenMap.clientSecret,
@@ -180,13 +180,14 @@ export class AndroidIAP {
             redirect_uri: tokenMap.redirect_uri
         }
         let options: Request.CoreOptions = {
-            json: true,
-            body: body
+            form: form,
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            }
         };
 
-        return RequestPromise.post('https://accounts.google.com/o/oauth2/token', options).then((res: GoogleAPIAuthResponse) => {
-            console.log('Google auth done: ', JSON.stringify(res));
-            return res;
+        return RequestPromise.post('https://accounts.google.com/o/oauth2/token', options).then((res) => {
+            return <GoogleAPIAuthResponse>JSON.parse(res);
         })
     }
 
